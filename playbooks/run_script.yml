@@ -3,18 +3,11 @@
 # Usage: ansible-playbook playbooks/run_script.yml -e "script_path=/path/to/script.sh"
 # Or with SemaphoreUI: create a template with this playbook
 
-- name: Run local script on remote hosts
+- name: Run script on remote hosts
   hosts: "{{ target_hosts | default('all') }}"
   gather_facts: false
-  become: false
-
   tasks:
-    - name: Run the script
+    - name: Execute script
       ansible.builtin.script:
-        cmd: "{{ script_path | default('test.sh') }}"
+        cmd: "{{ script_path }}"
         executable: /bin/bash
-      register: script_output
-
-    - name: Display script output
-      ansible.builtin.debug:
-        var: script_output.stdout_lines
